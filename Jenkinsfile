@@ -10,4 +10,8 @@ node {
     stage('Build') {
         build 'BuildRiseApp'
     }
+    // Start the freestyle job TestRiseApp.
+    stage('Test') {
+        build 'TestRiseApp'
+    }
 }
