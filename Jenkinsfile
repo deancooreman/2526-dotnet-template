@@ -1,3 +1,6 @@
+// Check GitHub every 2 minutes for new commits
+properties([pipelineTriggers([pollSCM('H/2 * * * *')])])
+
 node {
     // Remove the container of the previous deployment.
     stage('Preparation') {
