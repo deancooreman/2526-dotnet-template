@@ -20,4 +20,17 @@ node {
     stage('Test') {
         build 'TestRiseApp'
     }
+    // Deploy the same app to production
+    stage('Deploy to production') {
+        sshagent(['dmz010-deploy']) {
+            // Trust the host key of dmz010
+            sh 'mkdir -p ~/.ssh && ssh-keyscan 192.0.2.10 >> ~/.ssh/known_hosts'
+            // RISEAPP_PUBLISH: only listen on localhost, nginx is the reverse proxy
+            withEnv(['DOCKER_HOST=ssh://jenkins@192.0.2.10', 'RISEAPP_PUBLISH=127.0.0.1:5001']) {
+                sh 'docker rm -f riserunning || true'
+                sh 'rm -rf tempdir'
+                sh 'bash rise-app.sh'
+            }
+        }
+    }
 }
