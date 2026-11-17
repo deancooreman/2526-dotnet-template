@@ -56,5 +56,5 @@ _EOF_
 cd tempdir || exit
 docker build -t riseapp .
 # Publish address of the container: 5001 (all interfaces) by default, 127.0.0.1:5001 on production
-docker run -t -d -p "${RISEAPP_PUBLISH:-5001}:5001" --name riserunning riseapp
+docker run -t -d --restart unless-stopped -p "${RISEAPP_PUBLISH:-5001}:5001" --name riserunning riseapp
 docker ps -a
